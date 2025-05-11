@@ -3,7 +3,7 @@ import { IoMoonOutline, IoMoon  } from "react-icons/io5";
 
 
 const Header = () => {
-    const [changeTheme, setChangeTheme] = useState(false);
+    const [changeTheme, setChangeTheme] = useState(true);
 
     useEffect(() => {
         document.body.classList.toggle('dark_theme')
@@ -18,12 +18,12 @@ const Header = () => {
             <div className='theme_switch' onClick={handleThemeChange}>
                 { changeTheme ?
                     <>
-                        <IoMoon className="lightTheme_icon" />
-                        <span>Light Mode</span>  
-                    </> :
-                    <>
                         <IoMoonOutline className='darktheme_icon' />
                         <span>Dark Mode</span>
+                    </> :
+                    <> 
+                        <IoMoon className="lightTheme_icon" />
+                        <span>Light Mode</span>
                     </>
                 }
             </div>

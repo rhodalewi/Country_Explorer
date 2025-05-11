@@ -14,8 +14,8 @@ A simple React website that displays a list of countries fetched from the REST C
 
 ### Links
 
-- Solution URL: [Frontend Mentor](https://www.frontendmentor.io/solutions/your-solution-link)
-- Live Site URL: [Live Demo](https://your-live-site-url.com)
+- Solution URL: [Github Repository](https://github.com/rhodalewi/Country_Explorer)
+- Live Site URL: [Live Demo](https://country-explorer-git-main-alewi-rhoda-oyinkanaols-projects.vercel.app/)
 
 ## Tech Stack
 
