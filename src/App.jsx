@@ -12,8 +12,8 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path='/' Component={Main} />
-        <Route path='/country/:name' Component={DetailPage} />
+        <Route path='/' element={<Main/>} />
+        <Route path='/country/:name' element={<DetailPage/>} />
         <Route path='*' element={<MissingPage />} />
       </Routes>
     </>

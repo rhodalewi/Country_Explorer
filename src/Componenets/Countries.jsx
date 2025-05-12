@@ -31,7 +31,7 @@ function Countries({ selectedRegion, searchCountry }) {
             const countryCards = document.querySelector('.countries_container');
             countryCards.classList.add('animation');
         })();
-    }, 2000);
+    }, 1000);
 
   }, []);
     
@@ -57,8 +57,8 @@ function Countries({ selectedRegion, searchCountry }) {
             {filteredCountries && 
                 <>
                     <div className='countries_container'>
-                        {!loading && !error && filteredCountries.map((country, index) => (
-                            <Link to={`/country/${country.name.common}`} key={index} className='country_card'>
+                        {!loading && !error && filteredCountries.map((country) => (
+                            <Link to={`/country/${country.cca3}`} key={country.cca3} className='country_card'>
                     
                                 <div className="country_detail">
                                     <div className='country_flag'>
@@ -81,10 +81,13 @@ function Countries({ selectedRegion, searchCountry }) {
                 </>
             }
 
-            {filteredCountries.length === 0 && !loading &&
-                <>
-                  < MissingPage />
-                </>
+            
+            {
+                filteredCountries && filteredCountries.length === 0 && !loading && (
+                    <div className="missing_page_container">
+                        <MissingPage />
+                    </div>
+                )
             }
         </main>
     )

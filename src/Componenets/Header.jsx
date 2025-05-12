@@ -18,12 +18,13 @@ const Header = () => {
             <div className='theme_switch' onClick={handleThemeChange}>
                 { changeTheme ?
                     <>
-                        <IoMoonOutline className='darktheme_icon' />
-                        <span>Dark Mode</span>
-                    </> :
-                    <> 
                         <IoMoon className="lightTheme_icon" />
                         <span>Light Mode</span>
+                    </> :
+                    <> 
+                        
+                        <IoMoonOutline className='darktheme_icon' />
+                        <span>Dark Mode</span>
                     </>
                 }
             </div>

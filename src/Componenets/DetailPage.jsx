@@ -7,11 +7,12 @@ const DetailPage = () => {
     const { name } = useParams();
     const [country, setCountry] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [allCountries, setAllCountries] = useState([]);
 
     useEffect(() => {
         const fetchCountry = async () => {
             try {
-                const response = await fetch(`https://restcountries.com/v3.1/name/${name}?fullText=true`);
+                const response = await fetch(`https://restcountries.com/v3.1/alpha/${name}`);
                 const data = await response.json();
                 setCountry(data[0])
                 setLoading(false);
@@ -22,10 +23,31 @@ const DetailPage = () => {
         };
 
         setTimeout(() => {
-            (async () => await fetchCountry())();
+            fetchCountry();
         }, 1000);
-    }, [name])
+    }, [name]);
+
+    useEffect(() => {
+        const fetchAllCountries = async () => {
+            try {
+                const response = await fetch('https://restcountries.com/v3.1/all');
+                const data = await response.json();
+                setAllCountries(data);
+
+            } catch (error) {
+                console.error('Error fetching all countries', error);
+            }
+        }
+
+        fetchAllCountries();
+    }, []);
+
+    const getCountryNameByCode = (code) => { 
+        const borderCountry = allCountries.find(country => country.cca3 === code);
+        return borderCountry ? borderCountry.name.common : code;
+    }
     
+
     return (
         <main className="detail_page">
             <div className="loading_error">
@@ -90,9 +112,16 @@ const DetailPage = () => {
                                 <p><strong>Border Countries: </strong></p>
                                 
                                 <span className="border_countries">
-                                    {country.borders ? country.borders.map((border, index) => (
-                                    <button key={index}> {border} </button>
-                                    )) : <span className="no_border_country">No border countries</span>}
+                                    {country.borders ? (
+                                        country.borders.map((border, index) => (
+                                            <Link to={`/country/${border}`} key={index} className="border_country">
+                                                {getCountryNameByCode(border)}
+                                            </Link>
+                                           
+                                        ))
+                                    ) : (
+                                        <span className="no_border_country">No border countries</span>
+                                    )}
                                 </span>
                               
                             </div>
