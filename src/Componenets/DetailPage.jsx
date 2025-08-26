@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import MissingPage from "./MissingPage";
+import countriesData from '../data.json';
 
 const DetailPage = () => {
     const { name } = useParams();
+    const decodeURL = decodeURIComponent(name);
     const [country, setCountry] = useState(null);
     const [loading, setLoading] = useState(true);
     const [allCountries, setAllCountries] = useState([]);
@@ -12,10 +14,9 @@ const DetailPage = () => {
     useEffect(() => {
         const fetchCountry = async () => {
             try {
-                const response = await fetch(`https://restcountries.com/v3.1/alpha/${name}`);
-                const data = await response.json();
-                setCountry(data[0])
+                setCountry(countriesData.find(country => country.name === decodeURL));
                 setLoading(false);
+
             } catch (error) {
                 console.error('Error fetching data', error)
                 setLoading(false);
@@ -25,14 +26,12 @@ const DetailPage = () => {
         setTimeout(() => {
             fetchCountry();
         }, 1000);
-    }, [name]);
+    }, [decodeURL]);
 
     useEffect(() => {
         const fetchAllCountries = async () => {
-            try {
-                const response = await fetch('https://restcountries.com/v3.1/all');
-                const data = await response.json();
-                setAllCountries(data);
+            try {fetchAllCountries
+                setAllCountries(countriesData);
 
             } catch (error) {
                 console.error('Error fetching all countries', error);
@@ -43,8 +42,8 @@ const DetailPage = () => {
     }, []);
 
     const getCountryNameByCode = (code) => { 
-        const borderCountry = allCountries.find(country => country.cca3 === code);
-        return borderCountry ? borderCountry.name.common : code;
+        const borderCountry = allCountries.find(country => country.alpha3Code === code);
+        return borderCountry ? borderCountry.name : code;
     }
     
 
@@ -68,13 +67,13 @@ const DetailPage = () => {
 
                         <div className="country_information1">
                             <h2 className='country_name marginBottom'>
-                                {country.name.common}
+                                {country.name}
                             </h2>
                             <div className="country_details1">
                                 <div>
                                     <p className="country_native_name marginBottom">
                                         <strong>Native Name: </strong> 
-                                        {Object.values(country.name.nativeName || {}).map(native => native.common).join(', ')}
+                                        {country.nativeName}
                                     </p>
                 
                                     <p className='country_population marginBottom'>
@@ -96,14 +95,25 @@ const DetailPage = () => {
                                 <div>
                                     <p className='marginBottom'>
                                         <strong>Top Level Domain: </strong>
-                                        {country.tld}
+                                        {(country.topLevelDomain || []).join(', ')}
                                     </p>
                                     <p className='marginBottom'>
                                         <strong>Currencies: </strong>
-                                        {Object.values(country.currencies || {}).map(c => c.name).join(', ')}
+                                        {country.currencies
+                                            ? Array.isArray(country.currencies)
+                                                ? country.currencies.map(c => c.name).join(', ')
+                                                : Object.values(country.currencies).map(c => c.name).join(', ')
+                                            : 'N/A'}
                                     </p>
+
                                     <p className='marginBottom'>
-                                        <strong>Language:</strong> {Object.values(country.languages || {}).join(', ')}
+                                        <strong>Languages:</strong> {
+                                            Array.isArray(country.languages)
+                                                ? country.languages.map(lang => lang.name).join(', ')
+                                                : country.languages
+                                                    ? Object.values(country.languages).map(lang => lang.name).join(', ')
+                                                    : 'N/A'
+                                        }
                                     </p>
                                 </div>
                             </div>
@@ -114,13 +124,17 @@ const DetailPage = () => {
                                 <span className="border_countries">
                                     {country.borders ? (
                                         country.borders.map((border, index) => (
-                                            <Link to={`/country/${border}`} key={index} className="border_country">
-                                                {getCountryNameByCode(border)}
+                                            <Link
+                                                to={`/country/${getCountryNameByCode(border)}`}
+                                                key={index}
+                                                className="border_country"
+                                            >
+                                                {(border)}
                                             </Link>
                                            
                                         ))
                                     ) : (
-                                        <span className="no_border_country">No border countries</span>
+                                        <span className="no_border_country" >No border countries</span>
                                     )}
                                 </span>
                               

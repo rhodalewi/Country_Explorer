@@ -127,9 +127,11 @@ input:-webkit-autofill {
 .filter_container {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   position: relative;
-  padding: 0.75rem 0.75rem 0.75rem 1rem;
+  padding: 0.75rem;
+  width: 11rem;
   border-radius: 4px;
   background-color: var(--element_color);
   font-weight: 600;
@@ -176,6 +178,11 @@ input:-webkit-autofill {
   padding: 0.25rem 1rem;
   font-weight: 600;
   font-size: 0.875rem;
+}
+
+.region_option::selection {
+   background-color: var(--hover-color);
+  color: var(--bg-color);
 }
 
 .region_option:hover {
@@ -225,10 +232,16 @@ img {
   color: var(--text-color);
 }
 
-.country_name {
-  font-size: 1.125rem !important;
+.country_information1 .country_name {
+  font-size: 1.5rem;
   font-weight: 800;
-  margin-bottom: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.countries_container .country_name {
+  font-size: 1rem ;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
 }
 
 .country_population,
@@ -285,12 +298,6 @@ img {
   border-radius: 4px;
 }
 
-.country_name {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-}
-
 .country_details1 {
   display: flex;
   gap: 2rem;
@@ -309,6 +316,10 @@ img {
 .no_border_country {
   font-size: 0.875rem;
   white-space: nowrap;
+}
+
+.no_border_country {
+  color: #e20e0e;
 }
 
 .country_details2 .border_country {
@@ -358,7 +369,7 @@ img {
 }
 
 .animation {
- animation: slideIn 0.7s forwards;
+ animation: slideIn 1s forwards;
 }
 
 

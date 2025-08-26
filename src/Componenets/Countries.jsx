@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import MissingPage from './MissingPage';
+import countriesData from '../data.json';
 
 function Countries({ selectedRegion, searchCountry }) {
     const [countries, setCountries] = useState([]);
@@ -10,12 +11,7 @@ function Countries({ selectedRegion, searchCountry }) {
   useEffect(() => {
     const fetchCountries = async () => {
         try {
-            const response = await fetch('https://restcountries.com/v3.1/all');
-         
-            if (!response.ok) throw new Error('Error fetching countries');
-         
-            const result = await response.json();
-            setCountries(result);
+            setCountries(countriesData);
             setLoading(false);
 
         } catch (error) {
@@ -35,14 +31,16 @@ function Countries({ selectedRegion, searchCountry }) {
 
   }, []);
     
-    const sortedCountries = [...countries].sort((a, b) => a.name.common.localeCompare(b.name.common));
+    const priority = ['Germany', 'Iceland', 'Brazil', 'United States of America']; 
+    const arrangeCountries = [
+        ...countries.filter(country => priority.includes(country.name)),
+        ...countries.filter(country =>!priority.includes(country.name))
+    ]
 
-    const filteredCountries = sortedCountries.filter(country => {
+    const filteredCountries = arrangeCountries.filter(country => {
         const filterByRegion = selectedRegion === 'Filter by Region' || selectedRegion === "All" || country.region === selectedRegion;
 
-        const searchByName = searchCountry === "" || country.name.common.toLowerCase().includes(searchCountry.toLowerCase());
-
-
+        const searchByName = searchCountry === "" || country.name.toLowerCase().includes(searchCountry.toLowerCase());
 
         return filterByRegion && searchByName;
     });
@@ -58,7 +56,7 @@ function Countries({ selectedRegion, searchCountry }) {
                 <>
                     <div className='countries_container'>
                         {!loading && !error && filteredCountries.map((country) => (
-                            <Link to={`/country/${country.cca3}`} key={country.cca3} className='country_card'>
+                            <Link to={`/country/${encodeURIComponent(country.name)}`} key={country.name} className='country_card'>
                     
                                 <div className="country_detail">
                                     <div className='country_flag'>
@@ -66,7 +64,7 @@ function Countries({ selectedRegion, searchCountry }) {
                                     </div>
 
                                     <div className="country_info">
-                                        <h2 className='country_name'>{country.name.common}</h2>
+                                        <h2 className='country_name'>{country.name}</h2>
 
                                         <p className='country_population'><strong>Population:</strong> {country.population.toLocaleString()}</p>
 

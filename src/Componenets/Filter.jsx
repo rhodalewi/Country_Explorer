@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import { FaAngleUp } from "react-icons/fa6";
 import Dropdown from './Dropdown';
 
